@@ -43,10 +43,11 @@ class TaskList extends React.Component {
     console.log("data", data, status);
     let updated = tasks.map(task => {
       if (task.id.toString() === data.toString()) {
-        task.status = status;
+        return { ...task, status }; // Create a new object with the updated status property.
       }
       return task;
     });
+    
     this.setState({ tasks: updated });
   };
 
@@ -145,7 +146,11 @@ class TaskList extends React.Component {
               </div>
             </section>
           </div>
-          <div
+      
+        </div>
+        <div className="row-span-5 col-start-5">
+        
+        <div
           className="done small-box"
           onDragLeave={e => this.onDragLeave(e)}
           onDragEnter={e => this.onDragEnter(e)}
@@ -182,119 +187,11 @@ class TaskList extends React.Component {
             </div>
           </section> 
           </div>
+        
+        
+        
         </div>
-        <div className="row-span-5 col-start-5">3</div>
-        {/* <div
-          className="order small-box"
-          onDragLeave={e => this.onDragLeave(e)}
-          onDragEnter={e => this.onDragEnter(e)}
-          onDragEnd={e => this.onDragEnd(e)}
-          onDragOver={e => this.onDragOver(e)}
-          onDrop={e => this.onDrop(e, false, "new")}
-        >
-          <section className="drag_container">
-            <div className="container">
-              <div className="drag_column">
-                <div className="drag_row">
-                  <h4>New Order</h4>
-                  {newOrder.map(task => (
-                    <div
-                      className="card"
-                      key={task.name}
-                      id={task.id}
-                      draggable
-                      onDragStart={e => this.onDragStart(e)}
-                      onDragEnd={e => this.onDragEnd(e)}
-                    >
-                      <div className="img">
-                        <img src={task.image} alt="box" />
-                      </div>
-                      <div className="card_right">
-                        <div className="status">{task.status}</div>
-                        <div className="days">{task.time}</div>
-                        <div className="time">{task.days}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div
-          className="pending small-box"
-          onDragLeave={e => this.onDragLeave(e)}
-          onDragEnter={e => this.onDragEnter(e)}
-          onDragEnd={e => this.onDragEnd(e)}
-          onDragOver={e => this.onDragOver(e)}
-          onDrop={e => this.onDrop(e, false, "pending")}
-        >
-          <section className="drag_container">
-            <div className="container">
-              <div className="drag_column">
-                <div className="drag_row">
-                  <h4>Pending</h4>
-                  {pending.map(task => (
-                    <div
-                      className="card"
-                      key={task.name}
-                      id={task.id}
-                      draggable
-                      onDragStart={e => this.onDragStart(e)}
-                      onDragEnd={e => this.onDragEnd(e)}
-                    >
-                      <div className="img">
-                        <img src={task.image} alt="box" />
-                      </div>
-                      <div className="card_right">
-                        <div className="status">{task.status}</div>
-                        <div className="days">{task.time}</div>
-                        <div className="time">{task.days}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div
-          className="done small-box"
-          onDragLeave={e => this.onDragLeave(e)}
-          onDragEnter={e => this.onDragEnter(e)}
-          onDragEnd={e => this.onDragEnd(e)}
-          onDragOver={e => this.onDragOver(e)}
-          onDrop={e => this.onDrop(e, true, "done")}
-        > 
-         <section className="drag_container">
-            <div className="container">
-              <div className="drag_column">
-                <div className="drag_row">
-                  <h4>Done</h4>
-                  {done.map(task => (
-                    <div
-                      className="card"
-                      key={task.name}
-                      id={task.id}
-                      draggable
-                      onDragStart={e => this.onDragStart(e)}
-                      onDragEnd={e => this.onDragEnd(e)}
-                    >
-                      <div className="img">
-                        <img src={task.image} alt="box" />
-                      </div>
-                      <div className="card_right">
-                        <div className="status">{task.status}</div>
-                        <div className="days">{task.time}</div>
-                        <div className="time">{task.days}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section> 
-        </div> */}
+     
       </div>
     );
   }
