@@ -1,12 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-    PlusOutlined,
-    FileOutlined,
-    UnorderedListOutlined,
-    CodeSandboxOutlined,
-    SettingOutlined,
-} from "@ant-design/icons";
-import { Button, Divider, Tooltip } from "antd";
+
+import { Button } from "antd";
 import mySvgIcon from "../assets/section.svg";
 import Container from "../assets/container.svg";
 import Stack from "../assets/stack.svg";
@@ -24,25 +17,6 @@ import TextBlock from "../assets/text.svg";
 import BlockQuote from "../assets/blockquote.svg";
 import RichText from "../assets/richtext.svg";
 import Xbytesmalllogo from "../assets/xbytesmalllogo.png";
-
-
-import { useSelector, useDispatch } from 'react-redux';
-import { toggleSidebar, hideTooltip } from '../store/slice';
-
-
-const buttons = [
-    {
-        title: "Add",
-        buttons: [
-            <Button size="small" key="button1">
-                Button 1
-            </Button>,
-            <Button size="small" key="button2">
-                Button 2
-            </Button>,
-        ],
-    }
-]
 
 
 const sections = [
@@ -115,7 +89,7 @@ const Topbar = () => {
                         <Button size="small">Button 5</Button>
                         <Button size="small">Button 6</Button>
                         <a href="/draganddropzone">
-                            <Button size="small">Button 7</Button>
+                            <Button size="small">For Drag and Drop</Button>
                         </a>
                     </div>
                 </div>
