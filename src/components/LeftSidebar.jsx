@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     PlusOutlined,
     FileOutlined,
@@ -41,6 +41,8 @@ const buttons = [
     }
 ]
 
+
+
 const LeftSidebarButtons = [
     { icon: <PlusOutlined />, action: "plus", title: "Add Elements", classNames: "p-2" },
     { icon: <FileOutlined />, action: "file", title: "Open File" },
@@ -49,6 +51,7 @@ const LeftSidebarButtons = [
     { icon: <SettingOutlined />, action: "variables", title: "Variables", classNames: "p-2" },
     { icon: <FileOutlined />, action: "styleselectors", title: "Style Selectors", classNames: "p-2" },
 ];
+
 const sections = [
     {
         id: "1",
@@ -98,22 +101,19 @@ const sections = [
     },
 ];
 
-sections.forEach((section) => {
-    console.log("Section ID:", section.id);
-
-    if (section.id === "2") {
-        section.icons.forEach((icon) => {
-            console.log("Nested ID:", icon.id);
-        });
-    }
-});
-
-
 function LeftSidebar() {
+
     const [activeButton, setActiveButton] = useState(null);
     const [elements, setElements] = useState(sections);
+    const [selectedComponent, setSelectedComponent] = useState(null);
     const isSidebarOpen = useSelector((state) => state.sidebar.isSidebarOpen);
     const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        console.log("elements", elements)
+
+    })
 
 
     const toggleSidebar1 = (button) => {
@@ -124,19 +124,37 @@ function LeftSidebar() {
         setActiveButton(button);
     };
 
+    const onClickComponent = (component) => {
+        console.log("Component clicked:", component);
+
+        // Highlight the selected component
+        setSelectedComponent(component);
+    };
+
+
+    const onDeleteComponent = () => {
+        if (selectedComponent) {
+            const updatedSections = elements.map((section) => {
+                if (section.icons) {
+                    const updatedIcons = section.icons.filter((icon) => icon.id !== selectedComponent.id);
+                    return { ...section, icons: updatedIcons };
+                }
+                return section;
+            });
+            setElements(updatedSections);
+            setSelectedComponent(null); // Deselect the component
+        }
+    };
+
     const onDragStart = (evt) => {
         let element = evt.currentTarget;
         element.classList.add("dragged");
         evt.dataTransfer.setData("text/plain", evt.currentTarget.id);
         evt.dataTransfer.effectAllowed = "move";
-
-        console.log("Element dragged:", evt.currentTarget.id);
-
     };
 
     const onDragEnd = (evt) => {
         evt.currentTarget.classList.remove("dragged");
-        console.log("Drag ended");
     };
 
     const onDragEnter = (evt) => {
@@ -144,8 +162,6 @@ function LeftSidebar() {
         let element = evt.currentTarget;
         element.classList.add("dragged-over");
         evt.dataTransfer.dropEffect = "move";
-        // console.log("Element dragged over:", evt.currentTarget,);
-
     };
 
     const onDragLeave = (evt) => {
@@ -155,10 +171,6 @@ function LeftSidebar() {
         evt.preventDefault();
         let element = evt.currentTarget;
         element.classList.remove("dragged-over");
-
-
-        console.log("Element dragged away from:", evt.currentTarget);
-
     };
 
     const onDragOver = (evt) => {
@@ -182,18 +194,8 @@ function LeftSidebar() {
             }
             return elements;
         });
-
-
         setElements(updatedSections); // Update the state with the new data
-        console.log("Dropped data:", data);
-        console.log("Updated status:", status);
     };
-
-
-
-
-    // let dragedelement = elements.filter((t) => t.status === "dragedelement");
-    // const filteredSections = elements.filter((section) => section.icons && section.icons.some((icon) => icon.status === "dragedelement"));
     const filteredElements = elements.map((section) => {
         if (section.icons) {
             const filteredIcons = section.icons.filter((icon) => icon.status === "dragedelement");
@@ -227,9 +229,9 @@ function LeftSidebar() {
                     className=" overflow-auto"
                     onDragLeave={(e) => onDragLeave(e)}
                     onDragEnter={(e) => onDragEnter(e)}
-                    onDragEnd={(e) => onDragEnd(e)}
-                    onDragOver={(e) => onDragOver(e)}
-                    onDrop={(e) => onDrop(e, false, "element")}
+                // onDragEnd={(e) => onDragEnd(e)}
+                // onDragOver={(e) => onDragOver(e)}
+                // onDrop={(e) => onDrop(e, false, "element")}
                 >
                     {isSidebarOpen && activeButton === 'plus' && (
                         <div className="open-sidebar-content w-full p-3 overflow-auto ">
@@ -281,12 +283,27 @@ function LeftSidebar() {
                 </div>
 
                 {isSidebarOpen && activeButton === 'file' && (
+                    <div className="w-full flex justify-start m-5">
+                        {filteredElements.length === 0 ? (
+                            <p>Dropped component shows here</p>
+                        ) : (
+                            <>
+                                {filteredElements.map((section, index) => (
+                                    <div className="" key={index}>
+                                        {section.icons &&
+                                            section.icons.map((icon, iIndex) => (
 
-                    <div className="w-full flex justify-center">
-                        <h1>Hiii Files show here </h1>
+                                                <div className="flex flex-row" key={iIndex}>
+
+                                                    <p className="text-xs font-[600] p-1">{icon.label}</p>
+                                                </div>
+                                            ))}
+                                    </div>
+                                ))}
+                            </>
+                        )}
                     </div>
                 )}
-
                 {isSidebarOpen && activeButton === 'navigater' && (
 
                     <div className="w-full flex justify-center">
@@ -313,8 +330,8 @@ function LeftSidebar() {
                 )}
 
             </div>
-            <div className="flex flex-1 m-5">
-                <div className=' flex w-full flex-col '
+            {/* <div className="flex flex-1 m-5 h-[1000px]" >
+                <div className=' flex w-full h-[700px] flex-wrap flex-col overflow-auto'
                     onDragLeave={(e) => onDragLeave(e)}
                     onDragEnter={(e) => onDragEnter(e)}
                     onDragEnd={(e) => onDragEnd(e)}
@@ -322,7 +339,7 @@ function LeftSidebar() {
                     onDrop={(e) => onDrop(e, false, "dragedelement")}
                 >
                     {filteredElements.map((section, index) => (
-                        <div   key={index}>
+                        <div key={index}>
                             {section.icons && section.icons.map((icon, iIndex) => (
                                 <div key={iIndex}>
                                     <img
@@ -342,6 +359,38 @@ function LeftSidebar() {
                 </div>
             </div>
 
+        </div> */}
+            <div className="flex flex-1 m-5 h-[1000px]">
+                <div className='flex w-full h-[700px] flex-wrap flex-col overflow-auto'
+                    onDragLeave={(e) => onDragLeave(e)}
+                    onDragEnter={(e) => onDragEnter(e)}
+                    onDragEnd={(e) => onDragEnd(e)}
+                    onDragOver={(e) => onDragOver(e)}
+                    onDrop={(e) => onDrop(e, false, "dragedelement")}
+                >
+                    {filteredElements.map((section, index) => (
+                        <div key={index}>
+                            {section.icons && section.icons.map((icon, iIndex) => (
+                                <div key={iIndex} onClick={() => onClickComponent(icon)} className={`component ${selectedComponent === icon ? 'selected bg-cyan-100 h-20 w-20' : ''}`}>
+                                    <img
+                                        src={icon.icon}
+                                        alt="My Icon"
+                                        className="h-20 w-20"
+                                    />
+                                    <p className={`text-xs font-[600] ${selectedComponent === icon ? 'bg-cyan-100' : ''}`}>
+                                        {icon.label}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    ))}
+                </div>
+            </div>
+            {selectedComponent && (
+                <div className="delete-button">
+                    <button onClick={onDeleteComponent}>Delete</button>
+                </div>
+            )}
         </div>
     );
 }

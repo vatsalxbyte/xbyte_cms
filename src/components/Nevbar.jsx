@@ -5,10 +5,6 @@ import Plus from '../assets/plus.svg'
 
 const Nevbar = () => {
 
-useEffect(() => {
-  console.log("vatsal");
-}) 
-
     return (
         <div>
             {/* <div class="w-full h-10 p-5">

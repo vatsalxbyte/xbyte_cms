@@ -40,7 +40,6 @@
 //     evt.currentTarget.classList.remove("dragged-over");
 //     let data = evt.dataTransfer.getData("text/plain");
 //     let tasks = this.state.tasks;
-//     console.log("data", data, status);
 //     let updated = tasks.map(task => {
 //       if (task.id.toString() === data.toString()) {
 //         return { ...task, status }; // Create a new object with the updated status property.
@@ -53,7 +52,6 @@
 
 //   render() {
 //     const { tasks } = this.state;
-//     console.log("tasks", tasks);
 //     let pending = tasks.filter(t => t.status === "pending");
 //     let done = tasks.filter(t => t.status === "done");
 //     let newOrder = tasks.filter(t => t.status === "new");
@@ -234,7 +232,6 @@ function TaskList({ tasks }) {
     let element = evt.currentTarget;
     element.classList.remove("dragged-over");
 
-    console.log("Element dragged away from:", evt.currentTarget);
 
   };
 

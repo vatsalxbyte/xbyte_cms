@@ -10,7 +10,6 @@
 //         text: action.payload,
 //         completed: false,
 //       });
-//       console.log('Added todo:', state[state.length - 1]);
 //     }
 //   },
 // });
@@ -41,11 +40,7 @@ const sideBarSlice = createSlice({
     hideTooltip: (state) => {
       state.showTooltip = false;
     },
-    // setTasks: (state, action) => {
-    //   console.log("logtest", action.payload);
-    //   state.tasks = action.payload;
-    // },
-   
+
   },
 });
 

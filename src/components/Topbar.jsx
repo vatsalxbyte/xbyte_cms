@@ -17,6 +17,7 @@ import TextBlock from "../assets/text.svg";
 import BlockQuote from "../assets/blockquote.svg";
 import RichText from "../assets/richtext.svg";
 import Xbytesmalllogo from "../assets/xbytesmalllogo.png";
+import { useState } from "react";
 
 
 const sections = [
@@ -64,9 +65,22 @@ const sections = [
     },
 ];
 const Topbar = () => {
-  return (
-    <div>
-          <div className="grid grid-cols-10 grid-rows-1 gap-3 bg-[#CED4DA] h-10 justify-items-stretch items-center">
+    const [isHome, setIsHome] = useState(true);
+
+
+    const toggleLocation = () => {
+        if (isHome) {
+            window.location.href = '/draganddropzone';
+        } else {
+            window.location.href = '/';
+        }
+        setIsHome(!isHome);
+    };
+
+
+    return (
+        <div>
+            <div className="grid grid-cols-10 grid-rows-1 gap-3 bg-[#CED4DA] h-10 justify-items-stretch items-center">
                 <div className="justify-self-start w-10 ">
                     <a href="/">
                         <img src={Xbytesmalllogo} alt="XbyteLogo" />
@@ -85,17 +99,24 @@ const Topbar = () => {
                     </div>
                 </div>
                 <div className="col-span-2 col-start-9">
-                    <div className="col-span-5 justify-self-end">
-                        <Button size="small">Button 5</Button>
-                        <Button size="small">Button 6</Button>
+                    {/* <div className="col-span-5 justify-self-end">
+                     
                         <a href="/draganddropzone">
-                            <Button size="small">For Drag and Drop</Button>
+                            <Button type="primary" danger size="small">For Drag and Drop</Button>
+                        </a>
+                    </div> */}
+                    <div className="col-span-5 justify-self-end">
+                    <a href="/draganddropzone">
+                    <Button type="primary" danger size="small">
+                            {'For Drag and Drop'}
+                        </Button>
                         </a>
                     </div>
+
                 </div>
             </div>
-    </div>
-  )
+        </div>
+    )
 }
 
 export default Topbar
